@@ -16,6 +16,9 @@
 
 package net.jsign;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Console implementation for the command line tool.
  * 
@@ -25,11 +28,11 @@ package net.jsign;
 class StdOutConsole implements Console {
 
     public void debug(String message) {
-        System.out.println(message);
+        Logger.getLogger(StdOutConsole.class.getName()).log(Level.INFO, message);
     }
 
     public void info(String message) {
-        System.out.println(message);
+        Logger.getLogger(StdOutConsole.class.getName()).log(Level.INFO, message);
     }
 
     public void warn(String message) {
@@ -37,7 +40,7 @@ class StdOutConsole implements Console {
     }
 
     public void warn(String message, Throwable t) {
-        System.err.println(message);
+        Logger.getLogger(StdOutConsole.class.getName()).log(Level.SEVERE, message);
         if (t != null) {
             t.printStackTrace(System.err);
         }

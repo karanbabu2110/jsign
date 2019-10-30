@@ -48,7 +48,7 @@ class PVK {
     private static final long PVK_MAGIC = 0xB0B5F11EL;
 
     /** Header of the unencrypted key */
-    private static final byte[] RSA2_KEY_MAGIC = "RSA2".getBytes();
+    private static final byte[] RSA2_KEY_MAGIC = "RSA2".getBytes();//NO i18N
 
     private PVK() {
     }
@@ -68,7 +68,7 @@ class PVK {
         
         long magic = buffer.getInt() & 0xFFFFFFFFL;
         if (PVK_MAGIC != magic) {
-            throw new IllegalArgumentException("PVK header signature not found");
+            throw new IllegalArgumentException("PVK header signature not found");//NO i18N
         }
         
         buffer.position(buffer.position() + 4); // reserved
@@ -97,7 +97,7 @@ class PVK {
 
     private static byte[] decrypt(byte[] encoded, byte[] salt, String password) throws GeneralSecurityException {
         byte[] hash = deriveKey(salt, password);
-        String algorithm = "RC4";
+        String algorithm = "RC4";//NO i18N
         
         SecretKey strongKey = new SecretKeySpec(hash, 0, 16, algorithm);
         byte[] decoded = decrypt(strongKey, encoded);
@@ -113,7 +113,7 @@ class PVK {
             return decoded;
         }
         
-        throw new IllegalArgumentException("Unable to decrypt the PVK key, please verify the password");
+        throw new IllegalArgumentException("Unable to decrypt the PVK key, please verify the password");//NO i18N
     }
 
     private static byte[] decrypt(SecretKey key, byte[] encoded) throws GeneralSecurityException {
@@ -144,7 +144,7 @@ class PVK {
         buffer.order(ByteOrder.LITTLE_ENDIAN);
         
         if (!startsWith(key, RSA2_KEY_MAGIC)) {
-            throw new IllegalArgumentException("Unable to parse the PVK key, unsupported key format: " + new String(key, 0, RSA2_KEY_MAGIC.length));
+            throw new IllegalArgumentException("Unable to parse the PVK key, unsupported key format: " + new String(key, 0, RSA2_KEY_MAGIC.length));//NO i18N
         }
         
         buffer.position(buffer.position() + RSA2_KEY_MAGIC.length); // skip the header

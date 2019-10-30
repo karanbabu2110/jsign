@@ -42,7 +42,7 @@ import org.bouncycastle.tsp.TimeStampResponse;
 public class RFC3161Timestamper extends Timestamper {
 
     public RFC3161Timestamper() {
-        setURL("http://timestamp.comodoca.com/rfc3161");
+        setURL("http://timestamp.comodoca.com/rfc3161");//NO i18N
     }
 
     protected CMSSignedData timestamp(DigestAlgorithm algo, byte[] encryptedDigest) throws IOException, TimestampingException {
@@ -57,17 +57,17 @@ public class RFC3161Timestamper extends Timestamper {
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setUseCaches(false);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-type", "application/timestamp-query");
-        conn.setRequestProperty("Content-length", String.valueOf(request.length));
-        conn.setRequestProperty("Accept", "application/timestamp-reply");
-        conn.setRequestProperty("User-Agent", "Transport");
+        conn.setRequestMethod("POST");//NO i18N
+        conn.setRequestProperty("Content-type", "application/timestamp-query");//NO i18N
+        conn.setRequestProperty("Content-length", String.valueOf(request.length));//NO i18N
+        conn.setRequestProperty("Accept", "application/timestamp-reply");//NO i18N
+        conn.setRequestProperty("User-Agent", "Transport");//NO i18N
         
         conn.getOutputStream().write(request);
         conn.getOutputStream().flush();
 
         if (conn.getResponseCode() >= 400) {
-            throw new IOException("Unable to complete the timestamping due to HTTP error: " + conn.getResponseCode() + " - " + conn.getResponseMessage());
+            throw new IOException("Unable to complete the timestamping due to HTTP error: " + conn.getResponseCode() + " - " + conn.getResponseMessage());//NO i18N
         }
 
         try {
@@ -75,13 +75,13 @@ public class RFC3161Timestamper extends Timestamper {
             TimeStampResponse response = new TimeStampResponse(resp);
             response.validate(req);
             if (response.getStatus() != 0) {
-                throw new IOException("Unable to complete the timestamping due to an invalid response (" + response.getStatusString() + ")");
+                throw new IOException("Unable to complete the timestamping due to an invalid response (" + response.getStatusString() + ")");//NO i18N
             }
 
             return response.getTimeStampToken().toCMSSignedData();
 
         } catch (Exception e) {
-            throw new TimestampingException("Unable to complete the timestamping", e);
+            throw new TimestampingException("Unable to complete the timestamping", e);//NO i18N
         }
     }
 

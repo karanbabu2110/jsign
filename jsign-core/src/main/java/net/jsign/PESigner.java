@@ -110,7 +110,7 @@ public class PESigner {
         this.privateKey = privateKey;
         
         if (chain == null || chain.length == 0) {
-            throw new IllegalArgumentException("The certificate chain is empty");
+            throw new IllegalArgumentException("The certificate chain is empty");//NO i18N
         }
     }
 
@@ -124,7 +124,7 @@ public class PESigner {
     public PESigner(KeyStore keystore, String alias, String password) throws NoSuchAlgorithmException, KeyStoreException, UnrecoverableKeyException {
         Certificate[] chain = keystore.getCertificateChain(alias);
         if (chain == null) {
-            throw new IllegalArgumentException("No certificate found in the keystore with the alias '" + alias + "'");
+            throw new IllegalArgumentException("No certificate found in the keystore with the alias '" + alias + "'");//NO i18N
         }
         this.chain = chain;
         this.privateKey = (PrivateKey) keystore.getKey(alias, password.toCharArray());
@@ -387,7 +387,7 @@ public class PESigner {
         // create content signer
         final String sigAlg;
         if (signatureAlgorithm == null) {
-            sigAlg = digestAlgorithm + "with" + privateKey.getAlgorithm();
+            sigAlg = digestAlgorithm + "with" + privateKey.getAlgorithm();//NO i18N
         } else {
             sigAlg = signatureAlgorithm;
         }

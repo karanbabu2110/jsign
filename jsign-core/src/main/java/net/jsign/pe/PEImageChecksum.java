@@ -50,7 +50,7 @@ class PEImageChecksum implements Checksum {
     }
 
     public void update(int b) {
-        throw new UnsupportedOperationException("Checksum can only be updated with buffers");
+        throw new UnsupportedOperationException("Checksum can only be updated with buffers");//NO I18N
     }
 
     public void update(byte[] buffer, int offset, int length) {

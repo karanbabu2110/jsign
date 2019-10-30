@@ -47,7 +47,7 @@ public class AuthenticodeSignedDataGenerator extends CMSSignedDataGenerator {
         if (!_signers.isEmpty()) {
             signerInfo = ((SignerInformation) _signers.get(0)).toASN1Structure();
         } else {
-            CMSSignedData sigData = super.generate(new CMSProcessableByteArray(contentTypeOID, content.toASN1Primitive().getEncoded("DER")));
+            CMSSignedData sigData = super.generate(new CMSProcessableByteArray(contentTypeOID, content.toASN1Primitive().getEncoded("DER")));//NO i18N
             signerInfo = sigData.getSignerInfos().iterator().next().toASN1Structure();
         }
 
@@ -58,6 +58,6 @@ public class AuthenticodeSignedDataGenerator extends CMSSignedDataGenerator {
 
         ContentInfo contentInfo = new ContentInfo(CMSObjectIdentifiers.signedData, signedData);
 
-        return new CMSSignedData(new CMSProcessableByteArray(contentTypeOID, content.toASN1Primitive().getEncoded("DER")), contentInfo);
+        return new CMSSignedData(new CMSProcessableByteArray(contentTypeOID, content.toASN1Primitive().getEncoded("DER")), contentInfo);//NO i18N
     }
 }

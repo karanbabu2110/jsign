@@ -29,11 +29,11 @@ import org.bouncycastle.tsp.TSPAlgorithms;
 * @since 1.3
 */
 public enum DigestAlgorithm {
-    MD5("MD5", TSPAlgorithms.MD5),
-    SHA1("SHA-1", TSPAlgorithms.SHA1),
-    SHA256("SHA-256", TSPAlgorithms.SHA256),
-    SHA384("SHA-384", TSPAlgorithms.SHA384),
-    SHA512("SHA-512", TSPAlgorithms.SHA512);
+    MD5("MD5", TSPAlgorithms.MD5),//NO i18N
+    SHA1("SHA-1", TSPAlgorithms.SHA1),//NO i18N
+    SHA256("SHA-256", TSPAlgorithms.SHA256),//NO i18N
+    SHA384("SHA-384", TSPAlgorithms.SHA384),//NO i18N
+    SHA512("SHA-512", TSPAlgorithms.SHA512);//NO i18N
 
     /** The JCE name of the algorithm */
     public final String id;

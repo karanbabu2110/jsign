@@ -37,7 +37,7 @@ public class SpcStatementType extends ASN1Object {
     public SpcStatementType(ASN1ObjectIdentifier identifier) {
         if (!AuthenticodeObjectIdentifiers.SPC_INDIVIDUAL_SP_KEY_PURPOSE_OBJID.equals(identifier)
                 && !AuthenticodeObjectIdentifiers.SPC_COMMERCIAL_SP_KEY_PURPOSE_OBJID.equals(identifier)) {
-            throw new IllegalArgumentException("Invalid id for SpcStatementType : " + identifier);
+            throw new IllegalArgumentException("Invalid id for SpcStatementType : " + identifier);//NO i18N
         }
         
         this.identifier = identifier;

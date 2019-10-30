@@ -58,16 +58,16 @@ public class PrivateKeyUtils {
      */
     public static PrivateKey load(File file, String password) throws KeyException {
         try {
-            if (file.getName().endsWith(".pvk")) {
+            if (file.getName().endsWith(".pvk")) {//NO i18N
                 return PVK.parse(file, password);
-            } else if (file.getName().endsWith(".pem")) {
+            } else if (file.getName().endsWith(".pem")) {//NO i18N
                 return readPrivateKeyPEM(file, password);
             }
         } catch (Exception e) {
-            throw new KeyException("Failed to load the private key from " + file, e);
+            throw new KeyException("Failed to load the private key from " + file, e);//NO i18N
         }
         
-        throw new IllegalArgumentException("Unsupported private key format (PEM or PVK file expected");
+        throw new IllegalArgumentException("Unsupported private key format (PEM or PVK file expected");//NO i18N
     }
 
     private static PrivateKey readPrivateKeyPEM(File file, String password) throws IOException, GeneralSecurityException, OperatorCreationException, PKCSException {
@@ -76,7 +76,7 @@ public class PrivateKeyUtils {
             Object object = parser.readObject();
             
             if (object == null) {
-                throw new IllegalArgumentException("No key found in " + file);
+                throw new IllegalArgumentException("No key found in " + file);//NO i18N
             }
             
             BouncyCastleProvider provider = new BouncyCastleProvider();
@@ -103,7 +103,7 @@ public class PrivateKeyUtils {
                 return converter.getPrivateKey((PrivateKeyInfo) object);
                 
             } else {
-                throw new UnsupportedOperationException("Unsupported PEM object: " + object.getClass().getSimpleName());
+                throw new UnsupportedOperationException("Unsupported PEM object: " + object.getClass().getSimpleName());//NO i18N
             }
         }
     }

@@ -71,7 +71,7 @@ public abstract class Timestamper {
             try {
                 urls.add(new URL(tsaurl));
             } catch (MalformedURLException e) {
-                throw new IllegalArgumentException("Invalid timestamping URL: " + tsaurl, e);
+                throw new IllegalArgumentException("Invalid timestamping URL: " + tsaurl, e);//NO I18N
             }
         }
         this.tsaurls = urls;
@@ -103,7 +103,7 @@ public abstract class Timestamper {
         
         // Retry the timestamping and failover other services if a TSA is unavailable for a short period of time
         int attempts = Math.max(retries, tsaurls.size());
-        TimestampingException exception = new TimestampingException("Unable to complete the timestamping after " + attempts + " attempt" + (attempts > 1 ? "s" : ""));
+        TimestampingException exception = new TimestampingException("Unable to complete the timestamping after " + attempts + " attempt" + (attempts > 1 ? "s" : ""));//NO I18N
         int count = 0;
         while (token == null && count < Math.max(retries, tsaurls.size())) {
             try {
@@ -115,11 +115,12 @@ public abstract class Timestamper {
             }
 
             // pause before the next attempt
-            try {
-                Thread.sleep(retryWait * 1000);
+            count++;
+            /*try {
+                //Thread.sleep(retryWait * 1000);
                 count++;
             } catch (InterruptedException ie) {
-            }
+            }*/
         }
         
         if (token == null) {
@@ -183,7 +184,7 @@ public abstract class Timestamper {
             case RFC3161:
                 return new RFC3161Timestamper();
             default:
-                throw new IllegalArgumentException("Unsupported timestamping mode: " + mode);
+                throw new IllegalArgumentException("Unsupported timestamping mode: " + mode);//NO I18N
         }
     }
 }

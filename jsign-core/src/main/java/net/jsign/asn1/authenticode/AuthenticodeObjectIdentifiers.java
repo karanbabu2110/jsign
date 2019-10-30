@@ -26,7 +26,7 @@ import org.bouncycastle.asn1.ASN1ObjectIdentifier;
  */
 public interface AuthenticodeObjectIdentifiers {
 
-    ASN1ObjectIdentifier Authenticode                        = new ASN1ObjectIdentifier("1.3.6.1.4.1.311.2");
+    ASN1ObjectIdentifier AUTHENTICODE = new ASN1ObjectIdentifier("1.3.6.1.4.1.311.2");
 
     ASN1ObjectIdentifier SPC_INDIRECT_DATA_OBJID             = new ASN1ObjectIdentifier("1.3.6.1.4.1.311.2.1.4");
     ASN1ObjectIdentifier SPC_SP_AGENCY_INFO_OBJID            = new ASN1ObjectIdentifier("1.3.6.1.4.1.311.2.1.10");

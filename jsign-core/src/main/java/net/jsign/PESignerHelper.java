@@ -53,29 +53,29 @@ import net.jsign.timestamp.TimestampingMode;
  * @since 2.0
  */
 class PESignerHelper {
-    public static final String PARAM_KEYSTORE = "keystore";
-    public static final String PARAM_STOREPASS = "storepass";
-    public static final String PARAM_STORETYPE = "storetype";
-    public static final String PARAM_ALIAS = "alias";
-    public static final String PARAM_KEYPASS = "keypass";
-    public static final String PARAM_KEYFILE = "keyfile";
-    public static final String PARAM_CERTFILE = "certfile";
-    public static final String PARAM_ALG = "alg";
-    public static final String PARAM_TSAURL = "tsaurl";
-    public static final String PARAM_TSMODE = "tsmode";
-    public static final String PARAM_TSRETRIES = "tsretries";
-    public static final String PARAM_TSRETRY_WAIT = "tsretrywait";
-    public static final String PARAM_NAME = "name";
-    public static final String PARAM_URL = "url";
-    public static final String PARAM_PROXY_URL = "proxyUrl";
-    public static final String PARAM_PROXY_USER = "proxyUser";
-    public static final String PARAM_PROXY_PASS = "proxyPass";
-    public static final String PARAM_REPLACE = "replace";
+    public static final String PARAM_KEYSTORE = "keystore";//NO i18N
+    public static final String PARAM_STOREPASS = "storepass";//NO i18N
+    public static final String PARAM_STORETYPE = "storetype";//NO i18N
+    public static final String PARAM_ALIAS = "alias";//NO i18N
+    public static final String PARAM_KEYPASS = "keypass";//NO i18N
+    public static final String PARAM_KEYFILE = "keyfile";//NO i18N
+    public static final String PARAM_CERTFILE = "certfile";//NO i18N
+    public static final String PARAM_ALG = "alg";//NO i18N
+    public static final String PARAM_TSAURL = "tsaurl";//NO i18N
+    public static final String PARAM_TSMODE = "tsmode";//NO i18N
+    public static final String PARAM_TSRETRIES = "tsretries";//NO i18N
+    public static final String PARAM_TSRETRY_WAIT = "tsretrywait";//NO i18N
+    public static final String PARAM_NAME = "name";//NO i18N
+    public static final String PARAM_URL = "url";//NO i18N
+    public static final String PARAM_PROXY_URL = "proxyUrl";//NO i18N
+    public static final String PARAM_PROXY_USER = "proxyUser";//NO i18N
+    public static final String PARAM_PROXY_PASS = "proxyPass";//NO i18N
+    public static final String PARAM_REPLACE = "replace";//NO i18N
 
     private Console console;
 
     /** The name used to refer to a configuration parameter */
-    private String parameterName = "parameter";
+    private String parameterName = "parameter";//NO i18N
 
     private File keystore;
     private String storepass;
@@ -231,7 +231,7 @@ class PESignerHelper {
             case PARAM_PROXY_PASS: return proxyPass(value);
             case PARAM_REPLACE:    return replace("true".equalsIgnoreCase(value));
             default:
-                throw new IllegalArgumentException("Unknown " + parameterName + ": " + key);
+                throw new IllegalArgumentException("Unknown " + parameterName + ": " + key);//NO i18N
         }
     }
 
@@ -245,10 +245,10 @@ class PESignerHelper {
 
         // some exciting parameter validation...
         if (keystore == null && keyfile == null && certfile == null) {
-            throw new SignerException("keystore " + parameterName + ", or keyfile and certfile " + parameterName + "s must be set");
+            throw new SignerException("keystore " + parameterName + ", or keyfile and certfile " + parameterName + "s must be set");//NO i18N
         }
         if (keystore != null && (keyfile != null || certfile != null)) {
-            throw new SignerException("keystore " + parameterName + " can't be mixed with keyfile or certfile");
+            throw new SignerException("keystore " + parameterName + " can't be mixed with keyfile or certfile");//NO i18N
         }
         
         Provider provider = null;
@@ -256,13 +256,13 @@ class PESignerHelper {
             // the keystore parameter is either the provider name or the SunPKCS11 configuration file
             if (keystore != null && keystore.exists()) {
                 provider = createSunPKCS11Provider(keystore);
-            } else if (keystore != null && keystore.getName().startsWith("SunPKCS11-")) {
+            } else if (keystore != null && keystore.getName().startsWith("SunPKCS11-")) {//NO i18N
                 provider = Security.getProvider(keystore.getName());
                 if (provider == null) {
-                    throw new SignerException("Security provider " + keystore.getName() + " not found");
+                    throw new SignerException("Security provider " + keystore.getName() + " not found");//NO i18N
                 }
             } else {
-                throw new SignerException("keystore " + parameterName + " should either refer to the SunPKCS11 configuration file or to the name of the provider configured in jre/lib/security/java.security");
+                throw new SignerException("keystore " + parameterName + " should either refer to the SunPKCS11 configuration file or to the name of the provider configured in jre/lib/security/java.security");//NO i18N
             }
         }
 
@@ -275,7 +275,7 @@ class PESignerHelper {
             }
 
             if (alias == null) {
-                throw new SignerException("alias " + parameterName + " must be set");
+                throw new SignerException("alias " + parameterName + " must be set");//NO i18N
             }
 
             try {
@@ -284,7 +284,7 @@ class PESignerHelper {
                 throw new SignerException(e.getMessage(), e);
             }
             if (chain == null) {
-                throw new SignerException("No certificate found under the alias '" + alias + "' in the keystore " + (provider != null ? provider.getName() : keystore));
+                throw new SignerException("No certificate found under the alias '" + alias + "' in the keystore " + (provider != null ? provider.getName() : keystore));//NO i18N
             }
 
             char[] password = keypass != null ? keypass.toCharArray() : storepass.toCharArray();
@@ -292,47 +292,47 @@ class PESignerHelper {
             try {
                 privateKey = (PrivateKey) ks.getKey(alias, password);
             } catch (Exception e) {
-                throw new SignerException("Failed to retrieve the private key from the keystore", e);
+                throw new SignerException("Failed to retrieve the private key from the keystore", e);//NO i18N
             }
 
         } else {
             // separate private key and certificate files (PVK/SPC)
             if (keyfile == null) {
-                throw new SignerException("keyfile " + parameterName + " must be set");
+                throw new SignerException("keyfile " + parameterName + " must be set");//NO i18N
             }
             if (!keyfile.exists()) {
-                throw new SignerException("The keyfile " + keyfile + " couldn't be found");
+                throw new SignerException("The keyfile " + keyfile + " couldn't be found");//NO i18N
             }
             if (certfile == null) {
-                throw new SignerException("certfile " + parameterName + " must be set");
+                throw new SignerException("certfile " + parameterName + " must be set");//NO i18N
             }
             if (!certfile.exists()) {
-                throw new SignerException("The certfile " + certfile + " couldn't be found");
+                throw new SignerException("The certfile " + certfile + " couldn't be found");//NO i18N
             }
 
             // load the certificate chain
             try {
                 chain = loadCertificateChain(certfile);
             } catch (Exception e) {
-                throw new SignerException("Failed to load the certificate from " + certfile, e);
+                throw new SignerException("Failed to load the certificate from " + certfile, e);//NO i18N
             }
 
             // load the private key
             try {
                 privateKey = PrivateKeyUtils.load(keyfile, keypass != null ? keypass : storepass);
             } catch (Exception e) {
-                throw new SignerException("Failed to load the private key from " + keyfile, e);
+                throw new SignerException("Failed to load the private key from " + keyfile, e);//NO i18N
             }
         }
 
         if (alg != null && DigestAlgorithm.of(alg) == null) {
-            throw new SignerException("The digest algorithm " + alg + " is not supported");
+            throw new SignerException("The digest algorithm " + alg + " is not supported");//NO i18N
         }
 
         try {
             initializeProxy(proxyUrl, proxyUser, proxyPass);
         } catch (Exception e) {
-            throw new SignerException("Couldn't initialize proxy ", e);
+            throw new SignerException("Couldn't initialize proxy ", e);//NO i18N
         }
 
         // and now the actual work!
@@ -358,8 +358,8 @@ class PESignerHelper {
         try {
             try {
                 // Java 9 and later, using the Provider.configure() method
-                Method providerConfigureMethod = Provider.class.getMethod("configure", String.class);
-                Provider provider = Security.getProvider("SunPKCS11");
+                Method providerConfigureMethod = Provider.class.getMethod("configure", String.class);//NO i18N
+                Provider provider = Security.getProvider("SunPKCS11");//NO i18N
                 return (Provider) providerConfigureMethod.invoke(provider, configuration.getPath());
             } catch (NoSuchMethodException e) {
                 // prior to Java 9, direct instantiation of the SunPKCS11 class
@@ -367,7 +367,7 @@ class PESignerHelper {
                 return (Provider) sunpkcs11Constructor.newInstance(configuration.getPath());
             }
         } catch (Exception e) {
-            throw new SignerException("Failed to create a SunPKCS11 provider from the configuration file " + configuration, e);
+            throw new SignerException("Failed to create a SunPKCS11 provider from the configuration file " + configuration, e);//NO i18N
         }
     }
 
@@ -378,36 +378,36 @@ class PESignerHelper {
         } catch (SignerException e) {
             throw e;
         } catch (Exception e) {
-            throw new SignerException("Couldn't sign " + file, e);
+            throw new SignerException("Couldn't sign " + file, e);//NO i18N
         }
 
         if (file == null) {
-            throw new SignerException("file must be set");
+            throw new SignerException("file must be set");//NO i18N
         }
         if (!file.exists()) {
-            throw new SignerException("The file " + file + " couldn't be found");
+            throw new SignerException("The file " + file + " couldn't be found");//NO i18N
         }
 
         PEFile peFile;
         try {
             peFile = new PEFile(file);
         } catch (IOException e) {
-            throw new SignerException("Couldn't open the executable file " + file, e);
+            throw new SignerException("Couldn't open the executable file " + file, e);//NO i18N
         }
 
         try {
             if (console != null) {
-                console.info("Adding Authenticode signature to " + file);
+                console.info("Adding Authenticode signature to " + file);//NO i18N
             }
             signer.sign(peFile);
         } catch (Exception e) {
-            throw new SignerException("Couldn't sign " + file, e);
+            throw new SignerException("Couldn't sign " + file, e);//NO i18N
         } finally {
             try {
                 peFile.close();
             } catch (IOException e) {
                 if (console != null) {
-                    console.warn("Couldn't close " + file, e);
+                    console.warn("Couldn't close " + file, e);//NO i18N
                 }
             }
         }
@@ -416,7 +416,7 @@ class PESignerHelper {
     /**
      * Load the certificate chain from the specified PKCS#7 files.
      */
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked") //NO i18N
     private Certificate[] loadCertificateChain(File file) throws IOException, CertificateException {
         try (FileInputStream in = new FileInputStream(file)) {
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
@@ -436,7 +436,7 @@ class PESignerHelper {
         // Do nothing if there is no proxy url.
         if (proxyUrl != null && proxyUrl.trim().length() > 0) {
             if (!proxyUrl.trim().startsWith("http")) {
-                proxyUrl = "http://" + proxyUrl.trim();
+                proxyUrl = "http://" + proxyUrl.trim();//NO i18N
             }
             final URL url = new URL(proxyUrl);
             final int port = url.getPort() < 0 ? 80 : url.getPort();

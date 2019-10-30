@@ -43,13 +43,13 @@ import org.bouncycastle.util.encoders.Base64;
 public class AuthenticodeTimestamper extends Timestamper {
 
     public AuthenticodeTimestamper() {
-        setURL("http://timestamp.comodoca.com/authenticode");
+        setURL("http://timestamp.comodoca.com/authenticode");//NO i18N
     }
 
     protected CMSSignedData timestamp(DigestAlgorithm algo, byte[] encryptedDigest) throws IOException, TimestampingException {
         AuthenticodeTimeStampRequest timestampRequest = new AuthenticodeTimeStampRequest(encryptedDigest);
 
-        byte[] request = Base64.encode(timestampRequest.getEncoded("DER"));
+        byte[] request = Base64.encode(timestampRequest.getEncoded("DER"));//NO i18N
 
         HttpURLConnection conn = (HttpURLConnection) tsaurl.openConnection();
         conn.setConnectTimeout(10000);
@@ -57,24 +57,24 @@ public class AuthenticodeTimestamper extends Timestamper {
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setUseCaches(false);
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-type", "application/octet-stream");
-        conn.setRequestProperty("Content-length", String.valueOf(request.length));
-        conn.setRequestProperty("Accept", "application/octet-stream");
-        conn.setRequestProperty("User-Agent", "Transport");
+        conn.setRequestMethod("POST");//NO i18N
+        conn.setRequestProperty("Content-type", "application/octet-stream");//NO i18N
+        conn.setRequestProperty("Content-length", String.valueOf(request.length));//NO i18N
+        conn.setRequestProperty("Accept", "application/octet-stream");//NO i18N
+        conn.setRequestProperty("User-Agent", "Transport");//NO i18N
 
         conn.getOutputStream().write(request);
         conn.getOutputStream().flush();
 
         if (conn.getResponseCode() >= 400) {
-            throw new IOException("Unable to complete the timestamping due to HTTP error: " + conn.getResponseCode() + " - " + conn.getResponseMessage());
+            throw new IOException("Unable to complete the timestamping due to HTTP error: " + conn.getResponseCode() + " - " + conn.getResponseMessage());//NO i18N
         }
 
         try {
             byte[] response = Base64.decode(toBytes(conn.getInputStream()));
             return new CMSSignedData(response);
         } catch (Exception e) {
-            throw new TimestampingException("Unable to complete the timestamping", e);
+            throw new TimestampingException("Unable to complete the timestamping", e);//NO i18N
         }
     }
 

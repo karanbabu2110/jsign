@@ -24,9 +24,9 @@ package net.jsign.pe;
  */
 public enum PEFormat {
     
-    PE32(0x10b, "PE32"),
-    PE32plus(0x20b, "PE32+"),
-    ROM(0x107, "ROM");
+    PE32(0x10b, "PE32"),//NO i18N
+    PE32plus(0x20b, "PE32+"),//NO i18N
+    ROM(0x107, "ROM");//NO i18N
 
     final int value;
     final String label;

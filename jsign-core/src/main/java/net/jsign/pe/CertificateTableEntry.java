@@ -58,18 +58,18 @@ public class CertificateTableEntry {
 
     public CMSSignedData getSignature() throws CMSException {
         if (type != CertificateType.PKCS_SIGNED_DATA.getValue()) {
-            throw new UnsupportedOperationException("Unsupported certificate type: " + type);
+            throw new UnsupportedOperationException("Unsupported certificate type: " + type);//NO i18N
         }
         
         if (revision != 0x0200) {
-            throw new UnsupportedOperationException("Unsupported certificate revision: " + revision);
+            throw new UnsupportedOperationException("Unsupported certificate revision: " + revision);//NO i18N
         }
         
         if (signature == null) {
             try {
                 signature = new CMSSignedData((CMSProcessable) null, ContentInfo.getInstance(new ASN1InputStream(content).readObject()));
             } catch (IOException e) {
-                throw new IllegalArgumentException("Failed to construct ContentInfo from byte[]: ", e);
+                throw new IllegalArgumentException("Failed to construct ContentInfo from byte[]: ", e);//NO i18N
             }
         }
         
@@ -78,7 +78,7 @@ public class CertificateTableEntry {
 
     public void setSignature(CMSSignedData signature) throws IOException {
         this.signature = signature;
-        byte[] content = signature.toASN1Structure().getEncoded("DER");
+        byte[] content = signature.toASN1Structure().getEncoded("DER");//NO i18N
         this.content = pad(content, 8);
         this.size = this.content.length + 8;
         this.type = CertificateType.PKCS_SIGNED_DATA.getValue();

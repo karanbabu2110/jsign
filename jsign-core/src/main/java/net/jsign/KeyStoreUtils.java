@@ -48,9 +48,9 @@ public class KeyStoreUtils {
             // guess the type of the keystore from the extension of the file
             String filename = keystore.getName().toLowerCase();
             if (filename.endsWith(".p12") || filename.endsWith(".pfx")) {
-                storetype = "PKCS12";
+                storetype = "PKCS12";//NO i18N
             } else {
-                storetype = "JKS";
+                storetype = "JKS";//NO i18N
             }
         }
         
@@ -62,15 +62,15 @@ public class KeyStoreUtils {
                 ks = KeyStore.getInstance(storetype);
             }
         } catch (KeyStoreException e) {
-            throw new KeyStoreException("keystore type '" + storetype + "' is not supported", e);
+            throw new KeyStoreException("keystore type '" + storetype + "' is not supported", e);//NO i18N
         }
 
         if (keystore == null || !keystore.exists()) {
-            throw new KeyStoreException("The keystore " + keystore + " couldn't be found");
+            throw new KeyStoreException("The keystore " + keystore + " couldn't be found");//NO i18N
         }
         
         try {
-            FileInputStream in = "PKCS11".equals(storetype) ? null : new FileInputStream(keystore);
+            FileInputStream in = "PKCS11".equals(storetype) ? null : new FileInputStream(keystore);//NO i18N
             try {
                 ks.load(in, storepass != null ? storepass.toCharArray() : null);
             } finally {
@@ -79,7 +79,7 @@ public class KeyStoreUtils {
                 }
             }
         } catch (Exception e) {
-            throw new KeyStoreException("Unable to load the keystore " + keystore, e);
+            throw new KeyStoreException("Unable to load the keystore " + keystore, e);//NO i18N
         }
         
         return ks;

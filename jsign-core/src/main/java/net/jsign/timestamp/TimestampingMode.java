@@ -41,6 +41,6 @@ public enum TimestampingMode {
             return RFC3161;
         }
         
-        throw new IllegalArgumentException("Unknown timestamping mode: " + mode);
+        throw new IllegalArgumentException("Unknown timestamping mode: " + mode);//NO i18N
     }
 }
