@@ -26,7 +26,10 @@ import java.security.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.me.devicemanagement.framework.server.certificate.verifier.CertificateVerificationException;
 import net.jsign.DigestAlgorithm;
 import net.jsign.asn1.authenticode.AuthenticodeObjectIdentifiers;
 
@@ -92,7 +95,7 @@ public class PEFile implements Closeable {
             // DOS Header
             read(0, 0, 2);
             if (valueBuffer.get() != 'M' || valueBuffer.get() != 'Z') {
-                throw new IOException("DOS header signature not found");
+                throw new IOException("DOS header signature not found");//NO i18N
             }
 
             // PE Header
@@ -100,7 +103,7 @@ public class PEFile implements Closeable {
             peHeaderOffset = valueBuffer.getInt() & 0xFFFFFFFFL;
             read(peHeaderOffset, 0, 4);
             if (valueBuffer.get() != 'P' || valueBuffer.get() != 'E' || valueBuffer.get() != 0 || valueBuffer.get() != 0) {
-                throw new IOException("PE signature not found as expected at offset 0x" + Long.toHexString(peHeaderOffset));
+                throw new IOException("PE signature not found as expected at offset 0x" + Long.toHexString(peHeaderOffset));//NO i18N
             }
 
         } catch (IOException e) {
@@ -568,7 +571,7 @@ public class PEFile implements Closeable {
 
             } else {
                 if (type == DataDirectoryType.CERTIFICATE_TABLE) {
-                    throw new IOException("The certificate table isn't at the end of the file and can't be moved without invalidating the signature");
+                    throw new IOException("The certificate table isn't at the end of the file and can't be moved without invalidating the signature");//NO i18N
                 }
                 
                 // the new data is larger, erase and relocate it at the end
@@ -661,75 +664,75 @@ public class PEFile implements Closeable {
      */
     public void printInfo(PrintWriter out) {
         if (file != null) {
-            out.println("PE File");
-            out.println("  Name:          " + file.getName());
-            out.println("  Size:          " + file.length());
-            out.println("  Last Modified: " + new Date(file.lastModified()));
+            out.println("PE File");//NO i18N
+            out.println("  Name:          " + file.getName());//NO i18N
+            out.println("  Size:          " + file.length());//NO i18N
+            out.println("  Last Modified: " + new Date(file.lastModified()));//NO i18N
             out.println();
         }
         
-        out.println("PE Header");
-        out.println("  Machine:                    " + getMachineType());
-        out.println("  Number of sections:         " + getNumberOfSections());
-        out.println("  Timestamp:                  " + getTimeDateStamp());
-        out.println("  Pointer to symbol table:    0x" + Long.toHexString(getPointerToSymbolTable()));
-        out.println("  Number of symbols:          " + getNumberOfSymbols());
-        out.println("  Size of optional header:    " + getSizeOfOptionalHeader());
-        out.println("  Characteristics:            0x" + Long.toBinaryString(getCharacteristics()));
+        out.println("PE Header");//NO i18N
+        out.println("  Machine:                    " + getMachineType());//NO i18N
+        out.println("  Number of sections:         " + getNumberOfSections());//NO i18N
+        out.println("  Timestamp:                  " + getTimeDateStamp());//NO i18N
+        out.println("  Pointer to symbol table:    0x" + Long.toHexString(getPointerToSymbolTable()));//NO i18N
+        out.println("  Number of symbols:          " + getNumberOfSymbols());//NO i18N
+        out.println("  Size of optional header:    " + getSizeOfOptionalHeader());//NO i18N
+        out.println("  Characteristics:            0x" + Long.toBinaryString(getCharacteristics()));//NO i18N
         out.println();
         
-        out.println("Optional Header");
+        out.println("Optional Header");//NO i18N
         PEFormat format = getFormat();
-        out.println("  PE Format:                  0x" + Integer.toHexString(format.value) + " (" + format.label + ")");
-        out.println("  Linker version:             " + getMajorLinkerVersion() + "." + getMinorLinkerVersion());
-        out.println("  Size of code:               " + getSizeOfCode());
-        out.println("  Size of initialized data:   " + getSizeOfInitializedData());
-        out.println("  Size of uninitialized data: " + getSizeOfUninitializedData());
-        out.println("  Address of entry point:     0x" + Long.toHexString(getAddressOfEntryPoint()));
-        out.println("  Base of code:               0x" + Long.toHexString(getBaseOfCode()));
+        out.println("  PE Format:                  0x" + Integer.toHexString(format.value) + " (" + format.label + ")");//NO i18N
+        out.println("  Linker version:             " + getMajorLinkerVersion() + "." + getMinorLinkerVersion());//NO i18N
+        out.println("  Size of code:               " + getSizeOfCode());//NO i18N
+        out.println("  Size of initialized data:   " + getSizeOfInitializedData());//NO i18N
+        out.println("  Size of uninitialized data: " + getSizeOfUninitializedData());//NO i18N
+        out.println("  Address of entry point:     0x" + Long.toHexString(getAddressOfEntryPoint()));//NO i18N
+        out.println("  Base of code:               0x" + Long.toHexString(getBaseOfCode()));//NO i18N
         if (PEFormat.PE32.equals(getFormat())) {
-            out.println("  Base of data:               0x" + Long.toHexString(getBaseOfData()));
+            out.println("  Base of data:               0x" + Long.toHexString(getBaseOfData()));//NO i18N
         }
-        out.println("  Image base:                 0x" + Long.toHexString(getImageBase()));
-        out.println("  Section alignment:          " + getSectionAlignment());
-        out.println("  File alignment:             " + getFileAlignment());
-        out.println("  Operating system version:   " + getMajorOperatingSystemVersion() + "." + getMinorOperatingSystemVersion());
-        out.println("  Image version:              " + getMajorImageVersion() + "." + getMinorImageVersion());
-        out.println("  Subsystem version:          " + getMajorSubsystemVersion() + "." + getMinorSubsystemVersion());
-        out.println("  Size of image:              " + getSizeOfImage());
-        out.println("  Size of headers:            " + getSizeOfHeaders());
-        out.println("  Checksum:                   0x" + Long.toHexString(getCheckSum()));
-        out.println("  Checksum (computed):        0x" + Long.toHexString(computeChecksum()));
-        out.println("  Subsystem:                  " + getSubsystem());
-        out.println("  DLL characteristics:        0x" + Long.toBinaryString(getDllCharacteristics()));
-        out.println("  Size of stack reserve:      " + getSizeOfStackReserve());
-        out.println("  Size of stack commit:       " + getSizeOfStackCommit());
-        out.println("  Size of heap reserve:       " + getSizeOfHeapReserve());
-        out.println("  Size of heap commit:        " + getSizeOfHeapCommit());
-        out.println("  Number of RVA and sizes:    " + getNumberOfRvaAndSizes());
+        out.println("  Image base:                 0x" + Long.toHexString(getImageBase()));//NO i18N
+        out.println("  Section alignment:          " + getSectionAlignment());//NO i18N
+        out.println("  File alignment:             " + getFileAlignment());//NO i18N
+        out.println("  Operating system version:   " + getMajorOperatingSystemVersion() + "." + getMinorOperatingSystemVersion());//NO i18N
+        out.println("  Image version:              " + getMajorImageVersion() + "." + getMinorImageVersion());//NO i18N
+        out.println("  Subsystem version:          " + getMajorSubsystemVersion() + "." + getMinorSubsystemVersion());//NO i18N
+        out.println("  Size of image:              " + getSizeOfImage());//NO i18N
+        out.println("  Size of headers:            " + getSizeOfHeaders());//NO i18N
+        out.println("  Checksum:                   0x" + Long.toHexString(getCheckSum()));//NO i18N
+        out.println("  Checksum (computed):        0x" + Long.toHexString(computeChecksum()));//NO i18N
+        out.println("  Subsystem:                  " + getSubsystem());//NO i18N
+        out.println("  DLL characteristics:        0x" + Long.toBinaryString(getDllCharacteristics()));//NO i18N
+        out.println("  Size of stack reserve:      " + getSizeOfStackReserve());//NO i18N
+        out.println("  Size of stack commit:       " + getSizeOfStackCommit());//NO i18N
+        out.println("  Size of heap reserve:       " + getSizeOfHeapReserve());//NO i18N
+        out.println("  Size of heap commit:        " + getSizeOfHeapCommit());//NO i18N
+        out.println("  Number of RVA and sizes:    " + getNumberOfRvaAndSizes());//NO i18N
         out.println();
         
-        out.println("Data Directory");
+        out.println("Data Directory");//NO i18N
         for (DataDirectoryType type : DataDirectoryType.values()) {
             DataDirectory entry = getDataDirectory(type);
             if (entry != null && entry.exists()) {
-                out.printf("  %-30s 0x%08x %8d bytes\n", type, entry.getVirtualAddress(), entry.getSize());
+                out.printf("  %-30s 0x%08x %8d bytes\n", type, entry.getVirtualAddress(), entry.getSize());//NO i18N
             }
         }
         out.println();
         
-        out.println("Sections");
-        out.println("      Name     Virtual Size  Virtual Address  Raw Data Size  Raw Data Ptr  Characteristics");
+        out.println("Sections");//NO i18N
+        out.println("      Name     Virtual Size  Virtual Address  Raw Data Size  Raw Data Ptr  Characteristics");//NO i18N
         List<Section> sections = getSections();
         for (int i = 0; i < sections.size(); i++) {
             Section section = sections.get(i);
-            out.printf("  #%d  %-8s     %8d       0x%08x       %8d    0x%08x  %s\n", i + 1, section.getName(), section.getVirtualSize(), section.getVirtualAddress(), section.getSizeOfRawData(), section.getPointerToRawData(), section.getCharacteristics());
+            out.printf("  #%d  %-8s     %8d       0x%08x       %8d    0x%08x  %s\n", i + 1, section.getName(), section.getVirtualSize(), section.getVirtualAddress(), section.getSizeOfRawData(), section.getPointerToRawData(), section.getCharacteristics());//NO i18N
         }
         out.println();
         
         List<CMSSignedData> signatures = getSignatures();
         if (!signatures.isEmpty()) {
-            out.println("Signatures");
+            out.println("Signatures");//NO i18N
             for (CMSSignedData signedData : signatures) {
                 SignerInformation signerInformation = signedData.getSignerInfos().getSigners().iterator().next();
                 X509CertificateHolder certificate = (X509CertificateHolder) signedData.getCertificates().getMatches(signerInformation.getSID()).iterator().next();
@@ -829,13 +832,11 @@ public class PEFile implements Closeable {
         channel.write(ByteBuffer.allocate((int) padding));
     }
 
-    /**
-     * A verification method for verifying signed signatures
-     *
-     * Apart from the authenticode_pe.docx microsoft provides https://www.ietf.org/rfc/rfc2315.txt was used to
-     * implement this method
-     */
-    public void verify() throws VerificationException, IOException {
+    public void verify() throws IOException, VerificationException {
+        this.verify(false);
+    }
+
+    public void verify(boolean verbose) throws  IOException, VerificationException {
 
         MessageDigest md;
         List<CMSSignedData> signatures = getSignatures();
@@ -985,18 +986,7 @@ public class PEFile implements Closeable {
             throw new VerificationException("No Signature Present");
         }
     }
-
-    /**
-     * This method returns the SpcIndirectDataContent data structure which is described in authenticode_pe.docx
-     * This structure consists of the digest of the contents of the EXE which was calculated at the time of signing
-     * This will be retrieved and compared to check if the digest calculated now matches with this digest
-     * That's how we verify the integrity of the EXE
-     *
-     * @param contentInfo
-     * @return
-     */
     private DigestInfo getSpcIndirectDataContent(ContentInfo contentInfo) {
-
         DigestInfo digestInfo;
 
         AlgorithmIdentifier algId = null;
@@ -1049,22 +1039,12 @@ public class PEFile implements Closeable {
         return digestInfo;
     }
 
-    /**
-     * This method returns the constituents of the spcIndirectDataContent minus the some data
-     * Refer RFC2315, 9.3 to find what have been omitted and the remaining is returned as bytes
-     * This will be digested and compared to the digest in the AuthenticatedAttributes in the certificate
-     *
-     * @param primitive
-     * @return
-     * @throws IOException
-     */
     private byte[] getSpcBlob(ASN1Primitive primitive) throws IOException {
-
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        if(primitive instanceof ASN1Sequence) {
-
-            Iterator it = ((ASN1Sequence) primitive).iterator();
+        if (!(primitive instanceof ASN1Sequence)) {
+            return null;
+        } else {
+            Iterator it = ((ASN1Sequence)primitive).iterator();
 
             while(it.hasNext()) {
                 ASN1Primitive p = (ASN1Primitive)it.next();
@@ -1073,8 +1053,5 @@ public class PEFile implements Closeable {
 
             return outputStream.toByteArray();
         }
-
-        return null;
     }
 }
-
